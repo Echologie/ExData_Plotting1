@@ -1,0 +1,18 @@
+elec <- read.table(
+  "household_power_consumption.txt",
+  sep = ";",
+  na.strings = "?",
+  header = TRUE,
+  colClasses = c( "character", "character", "numeric",
+                  "numeric",   "numeric",   "numeric",
+                  "numeric",   "numeric",   "numeric" ) )
+elec <- elec[elec$Date == "1/2/2007" | elec$Date == "2/2/2007", ]
+elec$Date <- as.Date(elec$Date, format = "%d/%m/%Y")
+elec$Time <- strptime( paste(elec$Date, elec$Time),
+                       "%Y-%m-%d %H:%M:%S" )
+png(file="plot1.png")
+hist( elec$Global_active_power,
+      col = "red",
+      main = "Global Active Power",
+      xlab="Global Active Power (kilowatts)" )
+dev.off()
